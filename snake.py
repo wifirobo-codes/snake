@@ -21,13 +21,39 @@ RED = "\033[91m"
 DARK_GREY = "\033[90m"
 YELLOW = "\033[93m"
 CYAN = "\033[96m"
-BLUE = "\033[94m"RuntimeError
-        return 0
+BLUE = "\033[94m"
+RESET = "\033[0m"
+
+SNAKE_COLOR_THEMES = {
+    "green": {"head": DARK_GREEN, "body": LIGHT_GREEN},
+    "cyan": {"head": CYAN, "body": BLUE},
+    "yellow": {"head": YELLOW, "body": LIGHT_GREEN},
+    "magenta": {"head": "\033[95m", "body": "\033[35m"},
+}
 
 
 def save_high_score(high_score):
     with open(HIGH_SCORE_FILE, "w", encoding="utf-8") as file:
         file.write(str(high_score))
+
+
+def load_high_score():
+    try:
+        with open(HIGH_SCORE_FILE, "r", encoding="utf-8") as file:
+            return int(file.read())
+    except (FileNotFoundError, ValueError):
+        return 0
+
+
+def clear_screen():
+    """Clear the console screen in a cross-platform way."""
+    try:
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+    except Exception:
+        pass
 
 
 def spawn_food(snake):
